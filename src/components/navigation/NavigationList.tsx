@@ -1,6 +1,18 @@
 "use client";
-import {DndContext, closestCenter, DragEndEvent} from "@dnd-kit/core";
-import {SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
+import {
+  DndContext,
+  closestCenter,
+  DragEndEvent,
+  useSensor,
+  useSensors,
+  PointerSensor,
+  KeyboardSensor,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+  sortableKeyboardCoordinates,
+} from "@dnd-kit/sortable";
 import {SortableNavigationItem} from "./SortableNavigationItem";
 import type {
   NavigationItem as NavItem,
@@ -36,16 +48,35 @@ export function NavigationList({
   onAddNew,
   isAddingNew,
 }: NavigationListProps) {
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
   const handleDragEnd = (event: DragEndEvent) => {
     const {active, over} = event;
-    if (over && active.id !== over.id) {
-      const oldIndex = items.findIndex((item) => item.id === active.id);
-      const newIndex = items.findIndex((item) => item.id === over.id);
-      const newItems = [...items];
-      const [removed] = newItems.splice(oldIndex, 1);
-      newItems.splice(newIndex, 0, removed);
-      onReorder(newItems);
-    }
+
+    if (!over || active.id === over.id) return;
+
+    const activeId = active.id as string;
+    const overId = over.id as string;
+
+    const activeIndex = items.findIndex((item) => item.id === activeId);
+    const overIndex = items.findIndex((item) => item.id === overId);
+
+    if (activeIndex === -1 || overIndex === -1) return;
+
+    const newItems = [...items];
+    const [movedItem] = newItems.splice(activeIndex, 1);
+    newItems.splice(overIndex, 0, movedItem);
+
+    onReorder(newItems);
   };
 
   if (items.length === 0 && isAddingNew) {
@@ -53,23 +84,34 @@ export function NavigationList({
   }
 
   return (
-    <div className='rounded-lg border border-[#EAECF0] bg-white'>
-      <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+    <div className='rounded-lg border border-[#EAECF0] bg-[#F9FAFB] overflow-hidden'>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
         <SortableContext items={items} strategy={verticalListSortingStrategy}>
-          <div className='divide-y divide-[#EAECF0]'>
-            {items.map((item) => (
-              <SortableNavigationItem
+          <div>
+            {items.map((item, index) => (
+              <div
                 key={item.id}
-                item={item}
-                onEdit={onEdit}
-                onDelete={onDelete}
-                onAddChild={onAddChild}
-                editingId={editingId}
-                onEditStart={onEditStart}
-                onEditCancel={onEditCancel}
-                addingChildId={addingChildId}
-                onAddChildSubmit={onAddChildSubmit}
-              />
+                className={`border-b border-[#EAECF0] ${
+                  index === items.length - 1 ? "border-b-0" : ""
+                }`}
+              >
+                <SortableNavigationItem
+                  key={item.id}
+                  item={item}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                  onAddChild={onAddChild}
+                  editingId={editingId}
+                  onEditStart={onEditStart}
+                  onEditCancel={onEditCancel}
+                  addingChildId={addingChildId}
+                  onAddChildSubmit={onAddChildSubmit}
+                />
+              </div>
             ))}
           </div>
         </SortableContext>

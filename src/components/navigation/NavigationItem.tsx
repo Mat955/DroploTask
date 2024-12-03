@@ -1,6 +1,6 @@
 "use client";
 import {memo} from "react";
-import {Bars2Icon} from "@heroicons/react/24/outline";
+import {ArrowsPointingOutIcon} from "@heroicons/react/24/outline";
 import type {
   NavigationItem as NavItem,
   NavigationFormData,
@@ -37,12 +37,12 @@ export const NavigationItem = memo(function NavigationItem({
   dragHandleProps,
 }: NavigationItemProps) {
   return (
-    <div className=''>
-      <div className='bg-white border-b border-l border-[#EAECF0] p-6'>
+    <div>
+      <div className='bg-white py-6 px-6 group'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-3'>
-            <Bars2Icon
-              className='w-5 h-5 text-[#667085] cursor-move'
+            <ArrowsPointingOutIcon
+              className='w-5 h-5 text-[#475467] cursor-move select-none focus:outline-none'
               {...dragHandleProps}
             />
             <div>
@@ -76,7 +76,7 @@ export const NavigationItem = memo(function NavigationItem({
       </div>
 
       {isEditing && (
-        <div className='pl-16'>
+        <div className='pl-16 pr-6'>
           <NavigationForm
             onSubmit={(data) => onEdit(item.id, data)}
             onCancel={onEditCancel}
@@ -86,7 +86,7 @@ export const NavigationItem = memo(function NavigationItem({
       )}
 
       {isAddingChild && (
-        <div className='pl-16'>
+        <div className='pl-16 pr-6'>
           <NavigationForm
             onSubmit={(data) => onAddChildSubmit(item.id, data)}
             onCancel={onEditCancel}
@@ -95,7 +95,7 @@ export const NavigationItem = memo(function NavigationItem({
       )}
 
       {item.children && item.children.length > 0 && (
-        <div className='pl-16'>
+        <div className='pl-16 border-t border-[#EAECF0]'>
           {item.children.map((child) => (
             <NavigationItem
               key={child.id}

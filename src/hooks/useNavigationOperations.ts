@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import {useToast} from "../contexts/ToastContext";
 import {NavigationItem, NavigationFormData} from "@/types/navigation";
-import {useLocalStorage} from "./useLocalStorage";
 
 export function useNavigationOperations() {
   const [items, setItems] = useState<NavigationItem[]>([]);

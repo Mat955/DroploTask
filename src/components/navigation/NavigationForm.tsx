@@ -2,7 +2,7 @@
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
-import {MagnifyingGlassIcon} from "@heroicons/react/24/outline";
+import {MagnifyingGlassIcon, TrashIcon} from "@heroicons/react/24/outline";
 import type {NavigationFormData} from "@/types/navigation";
 
 const schema = z.object({
@@ -34,7 +34,15 @@ export function NavigationForm({onSubmit, onCancel}: NavigationFormProps) {
   };
 
   return (
-    <div className='w-full bg-white rounded-lg border border-[#D0D5DD] p-6 mt-6'>
+    <div className='relative w-full bg-white rounded-lg border border-[#D0D5DD] p-6 pr-16 mt-6 mb-6'>
+      <button
+        type='button'
+        onClick={onCancel}
+        className='absolute right-4 top-6 p-2 text-[#667085] hover:text-[#344054] transition-colors'
+        aria-label='Anuluj'
+      >
+        <TrashIcon className='w-5 h-5' />
+      </button>
       <form onSubmit={handleSubmit(onSubmitHandler)} className='space-y-4'>
         <div>
           <label

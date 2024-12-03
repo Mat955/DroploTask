@@ -20,18 +20,15 @@ interface SortableNavigationItemProps {
 
 export function SortableNavigationItem(props: SortableNavigationItemProps) {
   const {attributes, listeners, setNodeRef, transform, transition} =
-    useSortable({
-      id: props.item.id,
-      handle: true,
-    });
+    useSortable({id: props.item.id});
 
   const style = {
-    transform: CSS.Transform.toString(transform),
+    transform: CSS.Transform.toString({...transform, scaleX: 1, scaleY: 1}),
     transition,
   };
 
   return (
-    <div ref={setNodeRef} style={style}>
+    <div ref={setNodeRef} style={style} className='navigation-item'>
       <NavigationItem
         {...props}
         isEditing={props.editingId === props.item.id}
