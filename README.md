@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Navigation Management System
+
+A Next.js application for managing navigation menus with drag & drop functionality, nested items support, and form validation.
+
+Link to deployed version: https://droplo-nav.vercel.app/
+
+## Features
+
+- **Navigation List Management**
+
+  - Display navigation items with labels and URLs
+  - Drag & drop reordering
+  - Edit and delete functionality
+  - Nested menu items support
+
+- **Form Management**
+
+  - Create new navigation items
+  - Edit existing items
+  - Add nested sub-items
+  - Form validation for required fields and URL format
+
+- **User Experience**
+  - Real-time updates
+  - Local storage persistence
+  - Responsive design
+  - Error handling with toast notifications
+
+## Tech Stack
+
+- **Framework**: Next.js 15.0
+- **Styling**: Tailwind CSS
+- **Drag & Drop**: dnd-kit
+- **Form Management**: React Hook Form
+- **Validation**: Zod
+- **State Management**: React Hooks + Local Storage
+- **Testing**: Playwright
+- **Icons**: Heroicons
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository
+2. Install dependencies:
+   bash
+   npm install
+3. Run the development server:
+   bash
+   npm run dev
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Available Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run test` - Run Playwright tests
+- `npm run test:headed` - Run Playwright tests in headed mode
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Testing
 
-## Learn More
+The application includes comprehensive E2E tests using Playwright. Tests cover:
 
-To learn more about Next.js, take a look at the following resources:
+- Navigation item creation
+- Nested item management
+- Form validation
+- Drag and drop functionality
+- Item editing and deletion
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+To run tests:
+bash
+npm run test
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+src/
+├── app/ # Next.js app directory
+├── components/ # React components
+│ └── navigation/ # Navigation-specific components
+├── hooks/ # Custom React hooks
+├── tests/ # Playwright tests
+└── types/ # TypeScript type definitions
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Key Components
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **NavigationList**: Main component for displaying and managing navigation items
+2. **NavigationForm**: Form component for creating/editing items
+3. **NavigationItem**: Individual navigation item component
+4. **SortableNavigationItem**: Drag & drop wrapper component
+
+## State Management
+
+The application uses React's useState and useEffect hooks for state management, with local storage persistence. The main state hook `useNavigationOperations` handles:
+
+- Navigation items CRUD operations
+- Form state management
+- Drag & drop reordering
+- Error handling
