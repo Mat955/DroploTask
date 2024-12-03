@@ -17,6 +17,7 @@ interface NavigationListProps {
   addingChildId: string | null;
   onAddChildSubmit: (parentId: string, data: NavigationFormData) => void;
   onReorder: (items: NavItem[]) => void;
+  onAddNew: () => void;
 }
 
 export function NavigationList({
@@ -30,6 +31,7 @@ export function NavigationList({
   addingChildId,
   onAddChildSubmit,
   onReorder,
+  onAddNew,
 }: NavigationListProps) {
   const handleDragEnd = (event: DragEndEvent) => {
     const {active, over} = event;
@@ -44,25 +46,33 @@ export function NavigationList({
   };
 
   return (
-    <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-      <SortableContext items={items} strategy={verticalListSortingStrategy}>
-        <div className='space-y-5'>
-          {items.map((item) => (
-            <SortableNavigationItem
-              key={item.id}
-              item={item}
-              onEdit={onEdit}
-              onDelete={onDelete}
-              onAddChild={onAddChild}
-              editingId={editingId}
-              onEditStart={onEditStart}
-              onEditCancel={onEditCancel}
-              addingChildId={addingChildId}
-              onAddChildSubmit={onAddChildSubmit}
-            />
-          ))}
-        </div>
-      </SortableContext>
-    </DndContext>
+    <div className='space-y-5 border border-[#D0D5DD] rounded-lg bg-white'>
+      <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+        <SortableContext items={items} strategy={verticalListSortingStrategy}>
+          <div className=' bg-white'>
+            {items.map((item) => (
+              <SortableNavigationItem
+                key={item.id}
+                item={item}
+                onEdit={onEdit}
+                onDelete={onDelete}
+                onAddChild={onAddChild}
+                editingId={editingId}
+                onEditStart={onEditStart}
+                onEditCancel={onEditCancel}
+                addingChildId={addingChildId}
+                onAddChildSubmit={onAddChildSubmit}
+              />
+            ))}
+          </div>
+        </SortableContext>
+      </DndContext>
+      <button
+        onClick={onAddNew}
+        className='px-4 py-2.5 text-sm font-semibold text-[#344054] hover:bg-gray-50 rounded-lg border border-[#D0D5DD]'
+      >
+        Dodaj pozycję menu
+      </button>
+    </div>
   );
 }

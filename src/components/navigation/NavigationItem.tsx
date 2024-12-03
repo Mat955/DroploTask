@@ -35,8 +35,8 @@ export function NavigationItem({
   dragHandleProps,
 }: NavigationItemProps) {
   return (
-    <div className='space-y-5'>
-      <div className='bg-white rounded-lg border border-[#EAECF0] p-6'>
+    <div className=''>
+      <div className='bg-white border-b border-l border-[#EAECF0] p-6'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center gap-3'>
             <Bars2Icon
@@ -44,10 +44,8 @@ export function NavigationItem({
               {...dragHandleProps}
             />
             <div>
-              <h3 className='text-[#101828] font-medium'>{item.label}</h3>
-              {item.url && (
-                <p className='text-[#475467] text-sm mt-1'>{item.url}</p>
-              )}
+              <h3 className='text-[#101828] font-semibold'>{item.label}</h3>
+              {item.url && <p className='text-[#475467] text-sm'>{item.url}</p>}
             </div>
           </div>
           <div className='flex items-center'>
@@ -81,7 +79,6 @@ export function NavigationItem({
             onSubmit={(data) => onEdit(item.id, data)}
             onCancel={onEditCancel}
             isEditing
-            initialData={{label: item.label, url: item.url}}
           />
         </div>
       )}

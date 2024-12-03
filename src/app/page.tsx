@@ -12,7 +12,7 @@ export default function Home() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [addingChildId, setAddingChildId] = useState<string | null>(null);
 
-  const handleAddItem = () => {
+  const handleAddNew = () => {
     setIsAddingNew(true);
   };
 
@@ -28,7 +28,22 @@ export default function Home() {
   };
 
   const handleEdit = (id: string, data: NavigationFormData) => {
-    setItems(items.map((item) => (item.id === id ? {...item, ...data} : item)));
+    const editItem = (items: NavigationItem[]): NavigationItem[] => {
+      return items.map((item) => {
+        if (item.id === id) {
+          return {...item, ...data};
+        }
+        if (item.children) {
+          return {
+            ...item,
+            children: editItem(item.children),
+          };
+        }
+        return item;
+      });
+    };
+
+    setItems(editItem(items));
     setEditingId(null);
   };
 
@@ -42,7 +57,17 @@ export default function Home() {
   };
 
   const handleDelete = (id: string) => {
-    setItems(items.filter((item) => item.id !== id));
+    const deleteItem = (items: NavigationItem[]): NavigationItem[] => {
+      return items.filter((item) => {
+        if (item.id === id) return false;
+        if (item.children) {
+          item.children = deleteItem(item.children);
+        }
+        return true;
+      });
+    };
+
+    setItems(deleteItem(items));
   };
 
   const handleAddChild = (parentId: string) => {
@@ -57,17 +82,25 @@ export default function Home() {
       children: [],
     };
 
-    setItems(
-      items.map((item) => {
+    const addChildToItem = (items: NavigationItem[]): NavigationItem[] => {
+      return items.map((item) => {
         if (item.id === parentId) {
           return {
             ...item,
             children: [...(item.children || []), newChild],
           };
         }
+        if (item.children) {
+          return {
+            ...item,
+            children: addChildToItem(item.children),
+          };
+        }
         return item;
-      })
-    );
+      });
+    };
+
+    setItems(addChildToItem(items));
     setAddingChildId(null);
   };
 
@@ -79,7 +112,7 @@ export default function Home() {
     <main className='min-h-screen p-8'>
       <div className='max-w-[856px] mx-auto'>
         {items.length === 0 && !isAddingNew ? (
-          <EmptyState onAddClick={handleAddItem} />
+          <EmptyState onAddClick={handleAddNew} />
         ) : (
           <>
             <NavigationList
@@ -93,6 +126,7 @@ export default function Home() {
               addingChildId={addingChildId}
               onAddChildSubmit={handleAddChildSubmit}
               onReorder={handleReorder}
+              onAddNew={handleAddNew}
             />
             {isAddingNew && (
               <NavigationForm onSubmit={handleSubmit} onCancel={handleCancel} />

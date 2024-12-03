@@ -25,7 +25,7 @@ export function NavigationForm({onSubmit, onCancel}: NavigationFormProps) {
   });
 
   return (
-    <div className='w-full bg-white rounded-lg border border-[#EAECF0] p-6'>
+    <div className='w-full bg-white rounded-lg border border-[#D0D5DD] p-6 mt-6'>
       <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
         <div>
           <label
