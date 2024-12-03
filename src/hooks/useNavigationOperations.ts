@@ -10,6 +10,9 @@ export function useNavigationOperations() {
   const [isClient, setIsClient] = useState(false);
   const toast = useToast();
 
+  const isFormActive =
+    isAddingNew || editingId !== null || addingChildId !== null;
+
   useEffect(() => {
     setIsClient(true);
     const storedItems = localStorage.getItem("navigation-items");
@@ -30,6 +33,10 @@ export function useNavigationOperations() {
   }, [items, isClient]);
 
   const handleAddNew = () => {
+    if (isFormActive) {
+      toast.showError("Zakończ obecną operację przed dodaniem nowej pozycji");
+      return;
+    }
     try {
       setIsAddingNew(true);
     } catch (error: unknown) {
@@ -82,6 +89,10 @@ export function useNavigationOperations() {
   };
 
   const handleEditStart = (id: string) => {
+    if (isFormActive) {
+      toast.showError("Zakończ obecną operację przed rozpoczęciem edycji");
+      return;
+    }
     try {
       setEditingId(id);
     } catch (error: unknown) {
@@ -110,6 +121,10 @@ export function useNavigationOperations() {
   };
 
   const handleAddChild = (parentId: string) => {
+    if (isFormActive) {
+      toast.showError("Zakończ obecną operację przed dodaniem podmenu");
+      return;
+    }
     try {
       setAddingChildId(parentId);
     } catch (error: unknown) {
@@ -179,6 +194,7 @@ export function useNavigationOperations() {
   return {
     items: isClient ? items : [],
     isAddingNew,
+    isFormActive,
     editingId,
     addingChildId,
     handleAddNew,

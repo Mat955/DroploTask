@@ -16,6 +16,7 @@ interface SortableNavigationItemProps {
   onEditCancel: () => void;
   addingChildId: string | null;
   onAddChildSubmit: (parentId: string, data: NavigationFormData) => void;
+  isFormActive: boolean;
 }
 
 export function SortableNavigationItem(props: SortableNavigationItemProps) {

@@ -32,6 +32,7 @@ interface NavigationListProps {
   onReorder: (items: NavItem[]) => void;
   onAddNew: () => void;
   isAddingNew: boolean;
+  isFormActive: boolean;
 }
 
 export function NavigationList({
@@ -47,6 +48,7 @@ export function NavigationList({
   onReorder,
   onAddNew,
   isAddingNew,
+  isFormActive,
 }: NavigationListProps) {
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -110,6 +112,7 @@ export function NavigationList({
                   onEditCancel={onEditCancel}
                   addingChildId={addingChildId}
                   onAddChildSubmit={onAddChildSubmit}
+                  isFormActive={isFormActive}
                 />
               </div>
             ))}

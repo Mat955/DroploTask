@@ -20,6 +20,7 @@ interface NavigationItemProps {
   editingId: string | null;
   addingChildId: string | null;
   dragHandleProps?: Record<string, any>;
+  isFormActive: boolean;
 }
 
 export const NavigationItem = memo(function NavigationItem({
@@ -28,6 +29,7 @@ export const NavigationItem = memo(function NavigationItem({
   onDelete,
   onAddChild,
   isEditing,
+  isFormActive,
   onEditStart,
   onEditCancel,
   isAddingChild,
@@ -60,12 +62,14 @@ export const NavigationItem = memo(function NavigationItem({
               </button>
               <button
                 onClick={() => onEditStart(item.id)}
+                disabled={isFormActive}
                 className='px-3.5 py-2 text-sm font-semibold text-[#344054] hover:bg-gray-50'
               >
                 Edytuj
               </button>
               <button
                 onClick={() => onAddChild(item.id)}
+                disabled={isFormActive}
                 className='px-3.5 py-2 text-sm font-semibold text-[#344054] hover:bg-gray-50 border-l border-[#D0D5DD]'
               >
                 Dodaj pozycję menu
@@ -111,6 +115,7 @@ export const NavigationItem = memo(function NavigationItem({
               editingId={editingId}
               addingChildId={addingChildId}
               dragHandleProps={dragHandleProps}
+              isFormActive={isFormActive}
             />
           ))}
         </div>

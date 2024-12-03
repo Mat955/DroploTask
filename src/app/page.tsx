@@ -38,6 +38,7 @@ export default function Home() {
               onReorder={navigationOps.handleReorder}
               onAddNew={navigationOps.handleAddNew}
               isAddingNew={navigationOps.isAddingNew}
+              isFormActive={navigationOps.isFormActive}
             />
             {navigationOps.isAddingNew && (
               <NavigationForm
