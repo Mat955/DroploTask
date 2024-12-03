@@ -69,7 +69,7 @@ export function NavigationList({
       </DndContext>
       <button
         onClick={onAddNew}
-        className='px-4 py-2.5 text-sm font-semibold text-[#344054] hover:bg-gray-50 rounded-lg border border-[#D0D5DD]'
+        className='px-4 py-2.5 m-6 text-sm font-semibold text-[#344054] hover:bg-gray-50 rounded-lg border border-[#D0D5DD]'
       >
         Dodaj pozycję menu
       </button>
