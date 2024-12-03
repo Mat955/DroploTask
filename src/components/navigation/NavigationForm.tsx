@@ -5,10 +5,18 @@ import type {NavigationFormData} from "@/types/navigation";
 interface NavigationFormProps {
   onSubmit: (data: NavigationFormData) => void;
   onCancel: () => void;
+  initialData?: NavigationFormData;
+  isEditing?: boolean;
 }
 
-export function NavigationForm({onSubmit, onCancel}: NavigationFormProps) {
-  const {register, handleSubmit} = useForm<NavigationFormData>();
+export function NavigationForm({
+  onSubmit,
+  onCancel,
+  initialData,
+}: NavigationFormProps) {
+  const {register, handleSubmit} = useForm<NavigationFormData>({
+    defaultValues: initialData,
+  });
 
   return (
     <div className='w-full bg-white rounded-lg border border-[#EAECF0] p-6'>

@@ -25,13 +25,18 @@ export default function Home() {
     setIsAddingNew(false);
   };
 
-  const handleCancel = () => {
-    setIsAddingNew(false);
+  const handleEdit = (id: string, data: NavigationFormData) => {
+    setItems(items.map((item) => (item.id === id ? {...item, ...data} : item)));
     setEditingId(null);
   };
 
-  const handleEdit = (id: string) => {
+  const handleEditStart = (id: string) => {
     setEditingId(id);
+  };
+
+  const handleCancel = () => {
+    setIsAddingNew(false);
+    setEditingId(null);
   };
 
   const handleDelete = (id: string) => {
@@ -55,6 +60,9 @@ export default function Home() {
               onEdit={handleEdit}
               onDelete={handleDelete}
               onAddChild={handleAddChild}
+              editingId={editingId}
+              onEditStart={handleEditStart}
+              onEditCancel={handleCancel}
             />
             {isAddingNew && (
               <NavigationForm onSubmit={handleSubmit} onCancel={handleCancel} />

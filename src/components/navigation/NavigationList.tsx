@@ -1,11 +1,17 @@
 import {NavigationItem} from "./NavigationItem";
-import type {NavigationItem as NavItem} from "@/types/navigation";
+import type {
+  NavigationItem as NavItem,
+  NavigationFormData,
+} from "@/types/navigation";
 
 interface NavigationListProps {
   items: NavItem[];
-  onEdit: (id: string) => void;
+  onEdit: (id: string, data: NavigationFormData) => void;
   onDelete: (id: string) => void;
   onAddChild: (parentId: string) => void;
+  editingId: string | null;
+  onEditStart: (id: string) => void;
+  onEditCancel: () => void;
 }
 
 export function NavigationList({
@@ -13,6 +19,9 @@ export function NavigationList({
   onEdit,
   onDelete,
   onAddChild,
+  editingId,
+  onEditStart,
+  onEditCancel,
 }: NavigationListProps) {
   return (
     <div className='space-y-5'>
@@ -23,6 +32,9 @@ export function NavigationList({
           onEdit={onEdit}
           onDelete={onDelete}
           onAddChild={onAddChild}
+          isEditing={editingId === item.id}
+          onEditStart={onEditStart}
+          onEditCancel={onEditCancel}
         />
       ))}
     </div>

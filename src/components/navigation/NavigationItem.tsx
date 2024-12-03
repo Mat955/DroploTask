@@ -1,10 +1,15 @@
 import type {NavigationItem as NavItem} from "@/types/navigation";
+import {NavigationForm} from "./NavigationForm";
+import type {NavigationFormData} from "@/types/navigation";
 
 interface NavigationItemProps {
   item: NavItem;
-  onEdit: (id: string) => void;
+  onEdit: (id: string, data: NavigationFormData) => void;
   onDelete: (id: string) => void;
   onAddChild: (parentId: string) => void;
+  isEditing: boolean;
+  onEditStart: (id: string) => void;
+  onEditCancel: () => void;
 }
 
 export function NavigationItem({
@@ -12,6 +17,9 @@ export function NavigationItem({
   onEdit,
   onDelete,
   onAddChild,
+  isEditing,
+  onEditStart,
+  onEditCancel,
 }: NavigationItemProps) {
   return (
     <div className='space-y-5'>
@@ -32,7 +40,7 @@ export function NavigationItem({
                 Usuń
               </button>
               <button
-                onClick={() => onEdit(item.id)}
+                onClick={() => onEditStart(item.id)}
                 className='px-3.5 py-2 text-sm font-semibold text-[#344054] hover:bg-gray-50'
               >
                 Edytuj
@@ -48,6 +56,16 @@ export function NavigationItem({
         </div>
       </div>
 
+      {isEditing && (
+        <div className='pl-16'>
+          <NavigationForm
+            onSubmit={(data) => onEdit(item.id, data)}
+            onCancel={onEditCancel}
+            isEditing
+          />
+        </div>
+      )}
+
       {item.children && item.children.length > 0 && (
         <div className='pl-16'>
           {item.children.map((child) => (
@@ -57,6 +75,9 @@ export function NavigationItem({
               onEdit={onEdit}
               onDelete={onDelete}
               onAddChild={onAddChild}
+              isEditing={false}
+              onEditStart={onEditStart}
+              onEditCancel={onEditCancel}
             />
           ))}
         </div>
