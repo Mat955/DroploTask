@@ -1,17 +1,34 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useToast} from "../contexts/ToastContext";
 import {NavigationItem, NavigationFormData} from "@/types/navigation";
 import {useLocalStorage} from "./useLocalStorage";
 
 export function useNavigationOperations() {
-  const [items, setItems] = useLocalStorage<NavigationItem[]>(
-    "navigation-items",
-    []
-  );
+  const [items, setItems] = useState<NavigationItem[]>([]);
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [addingChildId, setAddingChildId] = useState<string | null>(null);
+  const [isClient, setIsClient] = useState(false);
   const toast = useToast();
+
+  useEffect(() => {
+    setIsClient(true);
+    const storedItems = localStorage.getItem("navigation-items");
+    if (storedItems) {
+      try {
+        setItems(JSON.parse(storedItems));
+      } catch (error) {
+        console.error("Error parsing stored items:", error);
+      }
+    }
+  }, []);
+
+  // Zapisujemy zmiany do localStorage
+  useEffect(() => {
+    if (isClient) {
+      localStorage.setItem("navigation-items", JSON.stringify(items));
+    }
+  }, [items, isClient]);
 
   const handleAddNew = () => {
     try {
@@ -161,7 +178,7 @@ export function useNavigationOperations() {
   };
 
   return {
-    items,
+    items: isClient ? items : [],
     isAddingNew,
     editingId,
     addingChildId,

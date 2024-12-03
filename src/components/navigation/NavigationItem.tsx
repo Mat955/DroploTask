@@ -1,3 +1,4 @@
+"use client";
 import {memo} from "react";
 import {Bars2Icon} from "@heroicons/react/24/outline";
 import type {

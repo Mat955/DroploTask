@@ -1,3 +1,4 @@
+"use client";
 import {DndContext, closestCenter, DragEndEvent} from "@dnd-kit/core";
 import {SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
 import {SortableNavigationItem} from "./SortableNavigationItem";
