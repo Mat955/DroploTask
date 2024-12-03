@@ -41,6 +41,7 @@ export default function Home() {
               onAddChildSubmit={handleAddChildSubmit}
               onReorder={handleReorder}
               onAddNew={handleAddNew}
+              isAddingNew={isAddingNew}
             />
             {isAddingNew && (
               <NavigationForm onSubmit={handleSubmit} onCancel={handleCancel} />

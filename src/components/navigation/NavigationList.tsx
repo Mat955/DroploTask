@@ -18,6 +18,7 @@ interface NavigationListProps {
   onAddChildSubmit: (parentId: string, data: NavigationFormData) => void;
   onReorder: (items: NavItem[]) => void;
   onAddNew: () => void;
+  isAddingNew: boolean;
 }
 
 export function NavigationList({
@@ -32,6 +33,7 @@ export function NavigationList({
   onAddChildSubmit,
   onReorder,
   onAddNew,
+  isAddingNew,
 }: NavigationListProps) {
   const handleDragEnd = (event: DragEndEvent) => {
     const {active, over} = event;
@@ -45,11 +47,15 @@ export function NavigationList({
     }
   };
 
+  if (items.length === 0 && isAddingNew) {
+    return null;
+  }
+
   return (
-    <div className='space-y-5 border border-[#D0D5DD] rounded-lg bg-white'>
+    <div className='rounded-lg border border-[#EAECF0] bg-white'>
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={items} strategy={verticalListSortingStrategy}>
-          <div className=' bg-white'>
+          <div className='divide-y divide-[#EAECF0]'>
             {items.map((item) => (
               <SortableNavigationItem
                 key={item.id}
@@ -67,12 +73,16 @@ export function NavigationList({
           </div>
         </SortableContext>
       </DndContext>
-      <button
-        onClick={onAddNew}
-        className='px-4 py-2.5 m-6 text-sm font-semibold text-[#344054] hover:bg-gray-50 rounded-lg border border-[#D0D5DD]'
-      >
-        Dodaj pozycję menu
-      </button>
+      {!isAddingNew && (
+        <div className='border-t border-[#EAECF0] p-6'>
+          <button
+            onClick={onAddNew}
+            className='px-4 py-2.5 text-sm font-semibold text-[#344054] hover:bg-gray-50 rounded-lg border border-[#D0D5DD] bg-white'
+          >
+            Dodaj pozycję menu
+          </button>
+        </div>
+      )}
     </div>
   );
 }
