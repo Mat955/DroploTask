@@ -6,9 +6,13 @@ import {NavigationList} from "@/components/navigation/NavigationList";
 import {useState} from "react";
 import type {NavigationItem, NavigationFormData} from "@/types/navigation";
 import {useToast} from "../contexts/ToastContext";
+import {useLocalStorage} from "../hooks/useLocalStorage";
 
 export default function Home() {
-  const [items, setItems] = useState<NavigationItem[]>([]);
+  const [items, setItems] = useLocalStorage<NavigationItem[]>(
+    "navigation-items",
+    []
+  );
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [addingChildId, setAddingChildId] = useState<string | null>(null);
