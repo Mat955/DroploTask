@@ -10,6 +10,7 @@ export default function Home() {
   const [items, setItems] = useState<NavigationItem[]>([]);
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [addingChildId, setAddingChildId] = useState<string | null>(null);
 
   const handleAddItem = () => {
     setIsAddingNew(true);
@@ -20,6 +21,7 @@ export default function Home() {
       id: crypto.randomUUID(),
       label: data.label,
       url: data.url,
+      children: [],
     };
     setItems([...items, newItem]);
     setIsAddingNew(false);
@@ -44,8 +46,29 @@ export default function Home() {
   };
 
   const handleAddChild = (parentId: string) => {
-    // Implementacja dodawania dzieci zostanie dodana w następnym kroku
-    console.log("Adding child to:", parentId);
+    setAddingChildId(parentId);
+  };
+
+  const handleAddChildSubmit = (parentId: string, data: NavigationFormData) => {
+    const newChild: NavigationItem = {
+      id: crypto.randomUUID(),
+      label: data.label,
+      url: data.url,
+      children: [],
+    };
+
+    setItems(
+      items.map((item) => {
+        if (item.id === parentId) {
+          return {
+            ...item,
+            children: [...(item.children || []), newChild],
+          };
+        }
+        return item;
+      })
+    );
+    setAddingChildId(null);
   };
 
   return (
@@ -63,6 +86,8 @@ export default function Home() {
               editingId={editingId}
               onEditStart={handleEditStart}
               onEditCancel={handleCancel}
+              addingChildId={addingChildId}
+              onAddChildSubmit={handleAddChildSubmit}
             />
             {isAddingNew && (
               <NavigationForm onSubmit={handleSubmit} onCancel={handleCancel} />

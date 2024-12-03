@@ -1,6 +1,8 @@
-import type {NavigationItem as NavItem} from "@/types/navigation";
+import type {
+  NavigationItem as NavItem,
+  NavigationFormData,
+} from "@/types/navigation";
 import {NavigationForm} from "./NavigationForm";
-import type {NavigationFormData} from "@/types/navigation";
 
 interface NavigationItemProps {
   item: NavItem;
@@ -10,6 +12,10 @@ interface NavigationItemProps {
   isEditing: boolean;
   onEditStart: (id: string) => void;
   onEditCancel: () => void;
+  isAddingChild: boolean;
+  onAddChildSubmit: (parentId: string, data: NavigationFormData) => void;
+  editingId: string | null;
+  addingChildId: string | null;
 }
 
 export function NavigationItem({
@@ -20,6 +26,10 @@ export function NavigationItem({
   isEditing,
   onEditStart,
   onEditCancel,
+  isAddingChild,
+  onAddChildSubmit,
+  editingId,
+  addingChildId,
 }: NavigationItemProps) {
   return (
     <div className='space-y-5'>
@@ -66,6 +76,15 @@ export function NavigationItem({
         </div>
       )}
 
+      {isAddingChild && (
+        <div className='pl-16'>
+          <NavigationForm
+            onSubmit={(data) => onAddChildSubmit(item.id, data)}
+            onCancel={onEditCancel}
+          />
+        </div>
+      )}
+
       {item.children && item.children.length > 0 && (
         <div className='pl-16'>
           {item.children.map((child) => (
@@ -75,9 +94,11 @@ export function NavigationItem({
               onEdit={onEdit}
               onDelete={onDelete}
               onAddChild={onAddChild}
-              isEditing={false}
+              isEditing={editingId === child.id}
               onEditStart={onEditStart}
               onEditCancel={onEditCancel}
+              isAddingChild={addingChildId === child.id}
+              onAddChildSubmit={onAddChildSubmit}
             />
           ))}
         </div>

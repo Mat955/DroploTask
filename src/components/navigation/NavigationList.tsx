@@ -12,6 +12,8 @@ interface NavigationListProps {
   editingId: string | null;
   onEditStart: (id: string) => void;
   onEditCancel: () => void;
+  addingChildId: string | null;
+  onAddChildSubmit: (parentId: string, data: NavigationFormData) => void;
 }
 
 export function NavigationList({
@@ -22,6 +24,8 @@ export function NavigationList({
   editingId,
   onEditStart,
   onEditCancel,
+  addingChildId,
+  onAddChildSubmit,
 }: NavigationListProps) {
   return (
     <div className='space-y-5'>
@@ -35,6 +39,8 @@ export function NavigationList({
           isEditing={editingId === item.id}
           onEditStart={onEditStart}
           onEditCancel={onEditCancel}
+          isAddingChild={addingChildId === item.id}
+          onAddChildSubmit={onAddChildSubmit}
         />
       ))}
     </div>
