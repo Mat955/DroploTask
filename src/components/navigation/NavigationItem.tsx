@@ -19,7 +19,11 @@ interface NavigationItemProps {
   onAddChildSubmit: (parentId: string, data: NavigationFormData) => void;
   editingId: string | null;
   addingChildId: string | null;
-  dragHandleProps?: Record<string, any>;
+  dragHandleProps?:
+    | {
+        [key: string]: unknown;
+      }
+    | undefined;
   isFormActive: boolean;
 }
 

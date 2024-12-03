@@ -24,7 +24,9 @@ export function SortableNavigationItem(props: SortableNavigationItemProps) {
     useSortable({id: props.item.id});
 
   const style = {
-    transform: CSS.Transform.toString({...transform, scaleX: 1, scaleY: 1}),
+    transform: CSS.Transform.toString(
+      transform ? {...transform, scaleX: 1, scaleY: 1} : null
+    ),
     transition,
   };
 
