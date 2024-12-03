@@ -24,9 +24,17 @@ export function NavigationForm({onSubmit, onCancel}: NavigationFormProps) {
     resolver: zodResolver(schema),
   });
 
+  const onSubmitHandler = async (data: NavigationFormData) => {
+    try {
+      await onSubmit(data);
+    } catch (error) {
+      console.error("Form submission error:", error);
+    }
+  };
+
   return (
     <div className='w-full bg-white rounded-lg border border-[#D0D5DD] p-6 mt-6'>
-      <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+      <form onSubmit={handleSubmit(onSubmitHandler)} className='space-y-4'>
         <div>
           <label
             htmlFor='label'

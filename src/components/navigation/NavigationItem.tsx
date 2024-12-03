@@ -1,3 +1,4 @@
+import {memo} from "react";
 import {Bars2Icon} from "@heroicons/react/24/outline";
 import type {
   NavigationItem as NavItem,
@@ -20,7 +21,7 @@ interface NavigationItemProps {
   dragHandleProps?: Record<string, any>;
 }
 
-export function NavigationItem({
+export const NavigationItem = memo(function NavigationItem({
   item,
   onEdit,
   onDelete,
@@ -115,4 +116,4 @@ export function NavigationItem({
       )}
     </div>
   );
-}
+});
