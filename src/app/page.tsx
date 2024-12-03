@@ -71,6 +71,10 @@ export default function Home() {
     setAddingChildId(null);
   };
 
+  const handleReorder = (newItems: NavigationItem[]) => {
+    setItems(newItems);
+  };
+
   return (
     <main className='min-h-screen p-8'>
       <div className='max-w-[856px] mx-auto'>
@@ -88,6 +92,7 @@ export default function Home() {
               onEditCancel={handleCancel}
               addingChildId={addingChildId}
               onAddChildSubmit={handleAddChildSubmit}
+              onReorder={handleReorder}
             />
             {isAddingNew && (
               <NavigationForm onSubmit={handleSubmit} onCancel={handleCancel} />

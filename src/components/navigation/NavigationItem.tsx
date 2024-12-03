@@ -1,3 +1,4 @@
+import {Bars2Icon} from "@heroicons/react/24/outline";
 import type {
   NavigationItem as NavItem,
   NavigationFormData,
@@ -16,6 +17,7 @@ interface NavigationItemProps {
   onAddChildSubmit: (parentId: string, data: NavigationFormData) => void;
   editingId: string | null;
   addingChildId: string | null;
+  dragHandleProps?: Record<string, any>;
 }
 
 export function NavigationItem({
@@ -30,16 +32,23 @@ export function NavigationItem({
   onAddChildSubmit,
   editingId,
   addingChildId,
+  dragHandleProps,
 }: NavigationItemProps) {
   return (
     <div className='space-y-5'>
       <div className='bg-white rounded-lg border border-[#EAECF0] p-6'>
         <div className='flex items-center justify-between'>
-          <div>
-            <h3 className='text-[#101828] font-medium'>{item.label}</h3>
-            {item.url && (
-              <p className='text-[#475467] text-sm mt-1'>{item.url}</p>
-            )}
+          <div className='flex items-center gap-3'>
+            <Bars2Icon
+              className='w-5 h-5 text-[#667085] cursor-move'
+              {...dragHandleProps}
+            />
+            <div>
+              <h3 className='text-[#101828] font-medium'>{item.label}</h3>
+              {item.url && (
+                <p className='text-[#475467] text-sm mt-1'>{item.url}</p>
+              )}
+            </div>
           </div>
           <div className='flex items-center'>
             <div className='flex border border-[#D0D5DD] rounded-lg overflow-hidden'>
@@ -57,7 +66,7 @@ export function NavigationItem({
               </button>
               <button
                 onClick={() => onAddChild(item.id)}
-                className='px-3.5 py-2 text-sm font-semibold text-[#344054] border-l border-[#D0D5DD] hover:bg-gray-50'
+                className='px-3.5 py-2 text-sm font-semibold text-[#344054] hover:bg-gray-50 border-l border-[#D0D5DD]'
               >
                 Dodaj pozycję menu
               </button>
@@ -72,6 +81,7 @@ export function NavigationItem({
             onSubmit={(data) => onEdit(item.id, data)}
             onCancel={onEditCancel}
             isEditing
+            initialData={{label: item.label, url: item.url}}
           />
         </div>
       )}
@@ -99,6 +109,9 @@ export function NavigationItem({
               onEditCancel={onEditCancel}
               isAddingChild={addingChildId === child.id}
               onAddChildSubmit={onAddChildSubmit}
+              editingId={editingId}
+              addingChildId={addingChildId}
+              dragHandleProps={dragHandleProps}
             />
           ))}
         </div>
